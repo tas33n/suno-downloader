@@ -1,0 +1,67 @@
+{
+  "name": "suno-downloader",
+  "version": "1.0.0",
+  "description": "Download public Suno audio in Node.js with TypeScript types and optional FFmpeg conversion",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/tas33n/suno-downloader.git" },
+  "homepage": "https://github.com/tas33n/suno-downloader#readme",
+  "bugs": { "url": "https://github.com/tas33n/suno-downloader/issues" },
+  "keywords": [
+    "suno",
+    "audio",
+    "downloader",
+    "typescript",
+    "ffmpeg",
+    "mp3",
+    "m4a"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "suno-download": "bin/suno-download.mjs"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node bin/suno-download.mjs",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "test:types": "tsc -p test/types/tsconfig.json",
+    "test:package": "node scripts/test-package.mjs",
+    "check": "npm test && npm run test:types",
+    "prepack": "npm run build",
+    "prepare": "npm run build"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  }
+}
