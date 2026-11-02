@@ -32,7 +32,7 @@ the error message and whether FFmpeg is installed.
 5. Push your changes to `main` (or push a tag `git tag vX.Y.Z && git push origin vX.Y.Z`).
 
 Automated publication runs via GitHub Actions (`.github/workflows/publish.yml`):
-- Runs full test matrix across Linux, Windows and macOS on Node 22 & 24.
+- Runs tests on Ubuntu with Node 22.
 - Validates version semantics and verifies against the npm registry.
 - Publishes to npmjs.org using provenance and `--access public`.
 - Automatically generates a GitHub Release corresponding to the published version.
