@@ -54,7 +54,35 @@ jobs:
             echo "::error::NPM_TOKEN secret is missing! Please configure NPM_TOKEN in GitHub repository secrets (Settings > Secrets and variables > Actions)."
             exit 1
           fi
-          npm publish --access public --provenance || npm publish --access public
+
+          PKG_NAME="${{ steps.version_check.outputs.name }}"
+          PKG_VERSION="${{ steps.version_check.outputs.version }}"
+
+          echo "Publishing ${PKG_NAME}@${PKG_VERSION} to npmjs.org with provenance..."
+          if npm publish --access public --provenance; then
+            echo "Successfully published with provenance!"
+          else
+            echo "First attempt returned non-zero. Checking if version was already registered..."
+            sleep 3
+            VERSIONS=$(npm view "$PKG_NAME" versions --json 2>/dev/null || echo "[]")
+            if echo "$VERSIONS" | grep -q "\"$PKG_VERSION\""; then
+              echo "Notice: Version $PKG_VERSION is confirmed live on npmjs.org!"
+            else
+              echo "Attempting publish without provenance fallback..."
+              if npm publish --access public; then
+                echo "Successfully published without provenance!"
+              else
+                sleep 2
+                VERSIONS_RETRY=$(npm view "$PKG_NAME" versions --json 2>/dev/null || echo "[]")
+                if echo "$VERSIONS_RETRY" | grep -q "\"$PKG_VERSION\""; then
+                  echo "Notice: Version $PKG_VERSION is confirmed live on npmjs.org!"
+                else
+                  echo "Error: Publishing failed."
+                  exit 1
+                fi
+              fi
+            fi
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
