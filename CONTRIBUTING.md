@@ -23,21 +23,18 @@ downloads, cookies, guest tokens, account data or raw rights responses in issues
 When reporting a bug, include your Node/OS versions, a minimal reproduction,
 the error message and whether FFmpeg is installed.
 
-The `research/` folder contains historical investigation notes and local
-third-party artifact snapshots. Those downloaded assets are reference material,
-not project-authored MIT code, and are excluded from the npm package. New
-implementation code should be authored independently rather than copied from
-downloaded bundles.
-
 ## Packaging and releasing
 
 1. Run `npm ci` and `npm run check`.
-2. Update the version and changelog.
-3. Run `npm pack --dry-run` to review the allowlisted files.
-4. Run `npm pack` and test installing the resulting `.tgz` in a separate project.
-   `npm run test:package` automates installation and ESM/CommonJS/CLI smoke checks.
-5. Confirm the package name is available (or choose an npm scope).
-6. An authorized maintainer can run `npm publish --access public` after signing
-   in to npm. The build runs automatically before packaging.
+2. Update the version in `package.json` (following semantic versioning) and update `CHANGELOG.md`.
+3. Run `npm run check:version` to verify the version is valid semver and not already published on npm.
+4. Run `npm pack --dry-run` to review the allowlisted files.
+5. Push your changes to `main` (or push a tag `git tag vX.Y.Z && git push origin vX.Y.Z`).
 
-No automated registry publication is configured.
+Automated publication runs via GitHub Actions (`.github/workflows/publish.yml`):
+- Runs full test matrix across Linux, Windows and macOS on Node 22 & 24.
+- Validates version semantics and verifies against the npm registry.
+- Publishes to npmjs.org using provenance and `--access public`.
+- Automatically generates a GitHub Release corresponding to the published version.
+
+Requires repository secret `NPM_TOKEN` (an npm access token with publish rights).

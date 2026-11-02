@@ -42,6 +42,7 @@
     "test:types": "tsc -p test/types/tsconfig.json",
     "test:package": "node scripts/test-package.mjs",
     "check": "npm test && npm run test:types",
+    "check:version": "node scripts/check-version.mjs",
     "prepack": "npm run build",
     "prepare": "npm run build"
   },

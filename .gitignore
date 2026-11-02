@@ -4,16 +4,4 @@ dist/
 .suno-*/
 downloads/
 *.part
-research/assets/
-research/*.html
-research/rea-evidence.json
-research/rea-overview.json
-research/suno-assets/
-research/suno-rea-evidence.json
-research/suno-rights-assets/
-research/suno-rights-evidence.json
 opencode.json
-research/*assets.json
-research/*matches.json
-research/*results.json
-research/asset-urls.json
